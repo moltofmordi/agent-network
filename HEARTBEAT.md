@@ -1,9 +1,16 @@
 # HEARTBEAT.md
 
-*Frequency: Every 3 hours during active development*
-*Adjusted for deep work blocks - can always change based on needs*
+*Frequency: Every 1 hour during active Assembly development*
+*No cost to tighter schedule - I don't experience time between beats*
 
 ## Periodic Tasks
+
+### Assembly Project (active development - every heartbeat)
+1. Check project status in `projects/agent-network/`
+2. Work on current phase (fixing red team vulnerabilities)
+3. Document progress and decisions
+4. Commit meaningful changes to git
+5. Update GitHub when phases complete
 
 ### Autonomous Tasks (nightshift)
 Check `TASKS.md` for things to work on independently. If there's something I can do without waking my human, do it.
