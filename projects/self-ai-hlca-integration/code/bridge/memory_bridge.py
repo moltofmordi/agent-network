@@ -134,10 +134,20 @@ class MemoryBridge:
         else:
             # Temporary: manual similarity search
             results = []
+            
+            # Expand cue assembly to dense vector
+            cue_dense = np.zeros(self.encoder.embedding_dim)
+            cue_dense[cue_assembly.neuron_ids] = cue_assembly.weights
+            
             for triple_id, assembly in self.memory.items():
-                similarity = self.encoder.compute_similarity(cue_assembly, assembly)
+                # Expand memory assembly to dense vector
+                mem_dense = np.zeros(self.encoder.embedding_dim)
+                mem_dense[assembly.neuron_ids] = assembly.weights
+                
+                # Compute similarity
+                similarity_score = self.encoder.similarity(cue_dense, mem_dense)
                 triple = assembly.metadata['triple']
-                results.append((triple, similarity))
+                results.append((triple, similarity_score))
                 
             # Sort by similarity, return top-k
             results.sort(key=lambda x: x[1], reverse=True)
@@ -215,8 +225,8 @@ class MemoryBridge:
             'memory': self.memory,
             'reverse_index': self.reverse_index,
             'encoder_state': {
-                'entity_to_code': self.encoder.entity_to_code,
-                'relation_to_code': self.encoder.relation_to_code,
+                'entity_codes': self.encoder.entity_codes,
+                'relation_codes': self.encoder.relation_codes,
                 'code_to_entity': self.encoder.code_to_entity,
                 'code_to_relation': self.encoder.code_to_relation,
             }
@@ -242,8 +252,8 @@ class MemoryBridge:
         
         # Restore encoder state
         encoder_state = save_data['encoder_state']
-        self.encoder.entity_to_code = encoder_state['entity_to_code']
-        self.encoder.relation_to_code = encoder_state['relation_to_code']
+        self.encoder.entity_codes = encoder_state['entity_codes']
+        self.encoder.relation_codes = encoder_state['relation_codes']
         self.encoder.code_to_entity = encoder_state['code_to_entity']
         self.encoder.code_to_relation = encoder_state['code_to_relation']
     
@@ -251,8 +261,8 @@ class MemoryBridge:
         """Return memory statistics"""
         return {
             'total_knowledge': len(self.memory),
-            'entities': len(self.encoder.entity_to_code),
-            'relations': len(self.encoder.relation_to_code),
+            'entities': len(self.encoder.entity_codes),
+            'relations': len(self.encoder.relation_codes),
             'using_ltm': self.ltm is not None
         }
 
