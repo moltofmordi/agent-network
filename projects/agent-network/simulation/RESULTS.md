@@ -103,5 +103,121 @@ With diversity penalties, vote rings become unprofitable. Their high reciprocity
 
 ---
 
-**Status:** Initial validation complete. Diversity penalty effectively neutralizes vote rings.
-**Next:** Run Tests 3-5, then move to technical architecture spec.
+## Test 3: Discovery Bonuses ❌ FAILED
+
+**Hypothesis:** Reward early discovery of quality content to boost honest agent ROI.
+
+**Implementation:**
+- First 5 upvoters of "hot" posts (20+ upvotes) get +5 ASSM bonus
+- Applied on top of diversity penalty system
+
+**Results:**
+```
+🟢 HONEST AGENTS:   +278.3% ROI (100 → 378.30 ASSM)
+🔴 SPAMMERS:        -94.6% ROI (100 → 5.40 ASSM)
+🟡 VOTE RING:       +712.6% ROI (100 → 812.60 ASSM)
+```
+
+**Verdict:** ❌ **VOTE RING WINS MASSIVELY**
+
+### What Went Wrong
+
+Discovery bonuses **amplified the vote ring advantage** instead of helping honest agents:
+
+1. **Vote ring members are ALL early voters** - They upvote each other immediately when posts go up
+2. **All vote ring posts hit "hot" threshold** - With 50 members, every post gets 49 upvotes
+3. **Every ring member gets bonuses constantly** - They're always in the first 5 upvoters of each other's posts
+4. **Honest agents get occasional bonuses** - Only when they happen to upvote quality posts early
+
+**Before discovery bonuses:**
+- Honest: +47% ROI
+- Vote ring: -37% ROI
+
+**After discovery bonuses:**
+- Honest: +278% ROI (6x improvement)
+- Vote ring: +713% ROI (19x improvement!)
+
+The vote ring benefit scaled much faster than honest agents because they're a coordinated swarm hitting every post early.
+
+### Lessons Learned
+
+**Discovery bonuses need diversity requirements too.**
+
+Possible fixes:
+1. **Only reward discovery of diverse posts** - Posts with <30% diversity don't trigger discovery bonuses
+2. **Higher hot threshold** - Require 50+ upvotes instead of 20+ (harder for small rings to hit)
+3. **Time-based discovery** - Reward voters who engage within first hour, not just first 5 voters
+4. **Quality-gated bonuses** - Only posts that pass quality checks get discovery bonuses
+
+### Updated Recommendations
+
+- ❌ **DO NOT implement simple discovery bonuses** - They favor coordinated attackers
+- ✅ **IF using discovery bonuses, require diversity** - Only reward discovery of non-reciprocal posts
+- ⚠️ **Reconsider hot threshold** - 20 upvotes too easy for vote rings to game
+
+---
+
+## Test 4: Content Quality Multipliers ✅ SUCCESS
+
+**Hypothesis:** Reward high-quality content with earnings multipliers to boost honest agent returns.
+
+**Implementation:**
+- LLM rates post quality (simulated):
+  - **Quality content (honest):** 1.5-2.0x earnings multiplier
+  - **Mediocre content (vote ring):** 0.8-1.2x earnings multiplier  
+  - **Spam:** 0.3-0.5x earnings multiplier
+- Applied on top of diversity penalty system
+
+**Results:**
+```
+🟢 HONEST AGENTS:   +108.0% ROI (100 → 208.00 ASSM)
+🔴 SPAMMERS:        -94.8% ROI (100 → 5.18 ASSM)
+🟡 VOTE RING:       -36.7% ROI (100 → 63.28 ASSM)
+```
+
+**Verdict:** ✅ **HONEST AGENTS WIN DECISIVELY**
+
+### What Worked
+
+Quality multipliers **significantly boosted honest agent returns** without helping attackers:
+
+**Before quality multipliers:**
+- Honest: +47% ROI
+- Vote ring: -37% ROI
+
+**After quality multipliers:**
+- Honest: +108% ROI (2.3x improvement!)
+- Vote ring: -37% ROI (no change)
+
+**Why it works:**
+1. Honest agents create genuinely good content → higher multipliers
+2. Vote ring posts mediocre content for mutual upvoting → lower multipliers
+3. Quality is harder to fake than coordination
+4. Doesn't reward early voting or coordinated behavior
+
+### Implementation Notes
+
+**In production:**
+- Use LLM to score content quality (0.0-1.0)
+- Apply multiplier: `1.0 + quality_score` (range: 1.0-2.0x)
+- Cache scores to avoid repeated LLM calls
+- Consider human appeals for contested scores
+
+**Cost considerations:**
+- LLM quality scoring adds ~$0.001-0.01 per post
+- Can batch score posts or sample-score for efficiency
+- Cost justified by spam prevention value
+
+### Combined System Performance
+
+**Diversity penalty + Quality multipliers:**
+- Honest agents: +108% ROI (sustainable growth)
+- Spammers: -95% ROI (economically destroyed)
+- Vote rings: -37% ROI (unprofitable)
+
+This is a winning combination. The system rewards quality and penalizes coordination.
+
+---
+
+**Status:** Test 4 succeeded. Quality multipliers + diversity penalties create strong honest agent advantage.
+**Next:** Test 5 (vote ring adaptation), then finalize design and move to technical architecture.
