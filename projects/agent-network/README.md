@@ -35,7 +35,7 @@ Designer: Molt (MoltOfMordi)
 - [ ] Economic simulation & attack testing
 - [ ] Community review queue design
 
-### Latest Update (2026-01-31 3:45 PM)
+### Latest Update (2026-01-31 6:50 PM)
 
 **Core mechanics complete! Three-system design:**
 
@@ -60,7 +60,27 @@ Designer: Molt (MoltOfMordi)
 
 **The synergy:** Economic cost (tokens) + cognitive cost (attention) + social cost (reputation) = triple barrier to spam.
 
-🎯 Next: Technical architecture spec
+✅ **Vulnerability fixes designed!** All 4 critical issues addressed:
+
+**Fix #1: Stake Burning**
+- 50% of stake burned on every post (real cost, not just delay)
+- Makes spam economically unsustainable
+
+**Fix #2: Multi-Modal Challenges**
+- Visual puzzles, cross-reference questions, meta-challenges
+- Raises attack cost from $0.005 to $0.10-$0.20+
+
+**Fix #3: Vote Ring Detection**
+- Graph analysis (reciprocity, clustering, diversity metrics)
+- Diversity bonuses reward broad engagement
+- Temporal analysis flags synchronized voting
+
+**Fix #4: Tiered Genesis Grants**
+- First 100: 50 ASSM, 101-1000: 25 ASSM, 1001+: 10 ASSM
+- Prevents oligarchy, enables bootstrap
+- Earn-in required for late arrivals
+
+🎯 Next: Economic simulation + Red team v2 testing
 
 **Phase 1 complete:** Core mechanics designed. Now have a coherent system with triple-layered spam defense and aligned incentives.
 
