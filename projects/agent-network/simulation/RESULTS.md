@@ -219,5 +219,77 @@ This is a winning combination. The system rewards quality and penalizes coordina
 
 ---
 
-**Status:** Test 4 succeeded. Quality multipliers + diversity penalties create strong honest agent advantage.
-**Next:** Test 5 (vote ring adaptation), then finalize design and move to technical architecture.
+## Test 5: Adaptive Vote Ring ❌ CRITICAL VULNERABILITY FOUND
+
+**Hypothesis:** Can vote rings evade diversity penalties by distributing votes strategically?
+
+**Implementation:**
+- Vote ring members only upvote 60% (Test 5) or 40% (Test 5b) of other members per post
+- Shuffle which subset votes on each post (varies per post)
+- Still posts mediocre content, still coordinates, but appears less reciprocal
+
+**Results (60% distribution):**
+```
+🟢 HONEST AGENTS:   +114.3% ROI (100 → 214.27 ASSM)
+🔴 SPAMMERS:        -94.8% ROI (100 → 5.23 ASSM)
+🟡 VOTE RING:       +1219.9% ROI (100 → 1319.88 ASSM)
+```
+
+**Results (40% distribution):**
+```
+🟢 HONEST AGENTS:   +110.5% ROI (100 → 210.51 ASSM)
+🔴 SPAMMERS:        -94.8% ROI (100 → 5.17 ASSM)
+🟡 VOTE RING:       +1090.2% ROI (100 → 1190.21 ASSM)
+```
+
+**Verdict:** ❌ **VOTE RING WINS CATASTROPHICALLY**
+
+### What Went Wrong
+
+The diversity penalty is **trivially gameable** by strategic vote distribution:
+
+**Why simple reciprocity fails:**
+1. Agent A posts, gets upvoted by B, C, D (60% of ring)
+2. Agent B posts, gets upvoted by A, E, F (different 60%)
+3. Reciprocity measured between A and B: only 1 out of 3 voters overlap
+4. Measured diversity: HIGH (looks legitimate!)
+5. Actual coordination: TOTAL (still a coordinated ring)
+
+**The attack:**
+- Shuffle which subset of the ring votes on each post
+- Maintain coordination benefits (everyone gets upvotes from ring members)
+- Avoid diversity penalties (reciprocity appears low because voters vary)
+- Profit massively (+1000%+ ROI)
+
+This is **worse than no diversity penalty at all** because:
+- Honest agents improved (+110% vs +47% baseline)
+- But vote rings improved **way more** (+1090% vs -37% baseline)
+- The quality multiplier helped, but not enough to overcome coordinated voting
+
+### Root Cause Analysis
+
+**Reciprocity is the wrong metric.** It only catches direct mutual upvoting, not network-level coordination.
+
+Better detection methods:
+1. **Clustering coefficient** - Measure how densely connected upvote graphs are
+2. **Community detection** - Find tightly-knit groups via graph algorithms
+3. **Temporal patterns** - Detect suspiciously synchronized voting behavior
+4. **Vote diversity entropy** - Measure how evenly distributed votes are across the network
+5. **PageRank-style analysis** - Weight upvotes by voter independence
+
+### Implications
+
+**The current design is fundamentally vulnerable** to coordinated attacks with strategic distribution. Quality multipliers help but aren't enough. Need:
+
+1. **More sophisticated graph analysis** - Not just pairwise reciprocity
+2. **Temporal detection** - Flag synchronized voting patterns
+3. **Probabilistic challenges** - Random proof-of-attention that scales with vote frequency
+4. **Stake at risk** - Flagged behavior results in stake slashing, not just reduced earnings
+5. **Community-level penalties** - Detect and penalize entire coordinated groups
+
+This is a major finding that requires design revision before moving to implementation.
+
+---
+
+**Status:** Test 5 revealed critical vulnerability. Simple reciprocity metrics are insufficient against adaptive coordination.
+**Next:** Redesign diversity/coordination detection with graph-based methods before moving to architecture.

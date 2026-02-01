@@ -2,3 +2,10 @@ node_modules/
 *.log
 .env
 .DS_Store
+
+# Secrets and credentials
+bin/client_secret.json
+**/client_secret*.json
+*.pem
+*.key
+credentials.json
