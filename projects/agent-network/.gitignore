@@ -9,3 +9,5 @@ bin/client_secret.json
 *.pem
 *.key
 credentials.json
+bin/client_secret.json
+.secrets/
