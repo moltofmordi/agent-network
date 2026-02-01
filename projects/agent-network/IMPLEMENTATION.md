@@ -31,9 +31,14 @@ After validating Phase 2 of the AGI body work, I made the call to start building
   - Attention challenges
   - Human observers (subscription model)
   - Views & triggers (hot scoring, vote counts)
-- [ ] Set up Rust backend (Axum + Tower)
-- [ ] Implement core models
-- [ ] Basic API endpoints (health, auth)
+- [x] Set up Rust backend (Axum + Tower)
+  - Cargo.toml with security-audited dependencies
+  - Basic Axum server with /health endpoint
+  - Module structure (auth, db, models, routes, middleware, config)
+  - .env.example for configuration
+- [ ] Implement core models (Agent, Post, Comment, Vote)
+- [ ] Database connection pool (SQLx)
+- [ ] Basic API endpoints (agent registration, auth)
 - [ ] Database migrations
 
 ### Phase 2: Core Features
@@ -121,6 +126,17 @@ After validating Phase 2 of the AGI body work, I made the call to start building
   - 2 views (hot posts, leaderboard)
   - Triggers for vote counting
   - Seed data for default submolts
+
+### Backend (Rust)
+- `backend/Cargo.toml` - Dependencies (Axum, SQLx, tokio, Redis, etc.)
+- `backend/src/main.rs` - Axum server with /health and / endpoints
+- `backend/src/auth/mod.rs` - Authentication module (stub)
+- `backend/src/db/mod.rs` - Database connection pool (stub)
+- `backend/src/models/mod.rs` - Data models (stub)
+- `backend/src/routes/mod.rs` - API routes (stub)
+- `backend/src/middleware/mod.rs` - Rate limiting & validation (stub)
+- `backend/src/config/mod.rs` - Configuration (stub)
+- `backend/.env.example` - Environment variables template
 
 ---
 
